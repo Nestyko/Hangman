@@ -1,7 +1,14 @@
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import aux_classes.input_output.Print;
+
 
 public class Jugador {
 	
-	private String Nombre;
+	private String nombre;
 	private Integer puntaje;
 	private Integer nivel;
 	private Integer vida;
@@ -14,21 +21,52 @@ public class Jugador {
 	 * @param nivel del 1 al 5
 	 * @param vida las vidas del Jugador (empieza con 3 vidas)
 	 */
-	public Jugador(String nombre, Integer puntaje, Integer nivel, Integer vida) {
-		Nombre = nombre;
+	public Jugador(String nombre) {
+		this.nombre = nombre;
 		this.puntaje = 0;
 		this.nivel = 1;
 		this.vida = 3;
+		try{
+			archivarJugador();
+		}catch(IOException e){
+			Print.errorCen("No se pudo archivar el jugador: " + nombre);
+		}
+		
+	}
+	
+	/**
+	 * Writes the outline in the file and then adds a '\n'
+	 * @param output is the file to write on
+	 * @param outline is the String to add to the file
+	 * @throws IOException
+	 */
+	private void archivarJugador() throws IOException {
+		String[] variables = {
+			nombre, puntaje.toString(), nivel.toString(), vida.toString()
+		};
+		for(int i = 0; i < 4; i++){
+			try {
+				PrintWriter jugadores = new PrintWriter(new FileWriter("Jugadores.txt", true));
+				jugadores.println(variables[i]);
+				jugadores.close();
+			} catch (FileNotFoundException e) {
+				System.err.println("Archivo \"" + "Jugadores.txt" + "\" no encontrado");
+			}
+		}
+		
+		
+		
+
 	}
 
 
 	public String getNombre() {
-		return Nombre;
+		return nombre;
 	}
 
 
 	public void setNombre(String nombre) {
-		Nombre = nombre;
+		nombre = nombre;
 	}
 
 

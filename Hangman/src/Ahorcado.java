@@ -14,7 +14,7 @@ public class Ahorcado{
 	public static ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	private static BufferedReader archivoNivel;
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args){
 
 			byte opc;
 			do{
@@ -27,9 +27,11 @@ public class Ahorcado{
 					continue;
 					}
 				case 1:{
-					
+					try{
 					cargarPalabras(1);
-					
+					}catch(IOException e){
+						Print.error("Las palabras para el nivel no han podido ser cargadas");
+					}
 					
 					opc = 0;
 					continue;
