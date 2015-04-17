@@ -12,8 +12,7 @@ public class Palabra {
 	 * @param palabra es la palabra a guardar
 	 * @param palabraOculta es misma palabra pero oculta
 	 */
-	public Palabra(String palabra, String palabraOculta) {
-		super();
+	public Palabra(String palabra) {
 		this.palabra = palabra;
 		ocultarPalabra();
 	}
