@@ -34,6 +34,14 @@ public class Ahorcado{
 					continue;
 					}
 				case 2:{
+					byte opc3;
+					do{
+						Print.cls();
+						Print.outSln("1.- Registrar nuevo usuario");
+						Print.outSln("2.- Jugar con un usuario existente");
+						opc3 = C.in_byte("Seleccion: ");
+					}while(opc3 != 0);
+					
 					String alias = C.in_String("Ingrese el alias: ");
 					try{
 						while(!Jugador.validarJugador(alias)){
@@ -259,5 +267,7 @@ public static byte menu(){
 	System.out.print("\n");
 	
 	}//acerca_de
+	
+	
 
 }

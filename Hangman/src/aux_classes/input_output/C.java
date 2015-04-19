@@ -128,7 +128,7 @@ public class C {
 			}
 		}//try
 		catch(Exception e){
-				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				Print.errorCen("Debe ingresar una palabra u oracion");
 				err = true;
 			}//catch
 		}while(err);
@@ -146,7 +146,7 @@ public class C {
 			err = false;
 		}//try
 		catch(Exception e){
-				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				Print.errorCen("Debe ingresar un numero");
 				err = true;
 			}//catch
 		}while(err);
@@ -164,7 +164,7 @@ public class C {
 			err = false;
 		}//try
 		catch(Exception e){
-				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				Print.errorCen("Debe ingresar un numero");
 				err = true;
 			}//catch
 		}while(err);
@@ -182,7 +182,7 @@ public class C {
 			err = false;
 		}//try
 		catch(Exception e){
-				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				Print.errorCen("Debe ingresar un numero");
 				err = true;
 			}//catch
 		}while(err);
@@ -200,7 +200,7 @@ public class C {
 			err = false;
 		}//try
 		catch(Exception e){
-				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				Print.errorCen("Debe ingresar un numero");
 				err = true;
 			}//catch
 		}while(err);
