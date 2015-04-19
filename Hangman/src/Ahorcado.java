@@ -40,21 +40,53 @@ public class Ahorcado{
 						Print.outSln("1.- Registrar nuevo usuario");
 						Print.outSln("2.- Jugar con un usuario existente");
 						opc3 = C.in_byte("Seleccion: ");
+						switch(opc3){
+						case 0:{
+							break;
+						}
+							case 1:{
+								String alias = C.in_String("Ingrese el alias: ");
+								alias = alias.toUpperCase();
+								try{
+									while(!Jugador.validarJugador(alias)){
+										Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
+										alias = C.in_String("Ingrese el alias: ");
+									}
+								}catch(IOException e){
+									Print.errorCen("Error verificando el alias");
+								}
+								
+								Jugador nuevo = new Jugador(alias);
+								jugadores.add(nuevo);
+								break;
+							}
+							case 2:{
+								String alias = C.in_String("Ingrese el alias: ");
+								alias = alias.toUpperCase();
+								try{
+									if(Jugador.validarJugador(alias)){
+										Print.errorCen("Este Jugador no esta registrado" );
+										break;
+									}else{
+										int index = 0;
+										for(int i = 0; i< jugadores.size();i++){
+											if(jugadores.get(i).getAlias() == alias){
+												index = i;
+												break;
+											}
+										}
+										jugar(jugadores.get(index));
+
+									}
+								}catch(IOException e){
+									Print.errorCen("Error verificando el alias");
+								}
+								
+							}
+						}
 					}while(opc3 != 0);
 					
-					String alias = C.in_String("Ingrese el alias: ");
-					try{
-						while(!Jugador.validarJugador(alias)){
-							Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
-							alias = C.in_String("Ingrese el alias: ");
-						}
-					}catch(IOException e){
-						Print.errorCen("Error verificando el alias");
-					}
 					
-					Jugador nuevo = new Jugador(alias);
-					jugadores.add(nuevo);
-					break;
 					
 					
 
@@ -268,6 +300,8 @@ public static byte menu(){
 	
 	}//acerca_de
 	
-	
+	public static void jugar(Jugador player){
+		
+	}
 
 }
