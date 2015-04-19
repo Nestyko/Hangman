@@ -13,52 +13,124 @@ public class Ahorcado{
 	
 	public static ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	private static BufferedReader archivoNivel;
+	public static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	
 	public static void main(String[] args){
 
 			byte opc;
+			try{
+			cargarJugadores();
+			}catch(IOException e){
+				Print.errorCen("Error al cargar los jugadores");
+			}
 			do{
 			Print.cls();
 			opc = menu();
+			
 			Print.cls();
 			switch(opc){
 				case 0:{
-					opc = 1;
+					opc = 0;
 					continue;
 					}
-				case 1:{
+				case 2:{
+					String alias = C.in_String("Ingrese el alias: ");
 					try{
-					cargarPalabras(1);
+						while(!Jugador.validarJugador(alias)){
+							Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
+							alias = C.in_String("Ingrese el alias: ");
+						}
 					}catch(IOException e){
-						Print.error("Las palabras para el nivel no han podido ser cargadas");
+						Print.errorCen("Error verificando el alias");
 					}
 					
-					opc = 0;
-					continue;
-				}//case 1
-				case 2: {
-					for (Palabra palabra : palabras) {
-						System.out.println(palabra.getPalabra());
-					}
+					Jugador nuevo = new Jugador(alias);
+					jugadores.add(nuevo);
+					break;
+					
+					
+
+				}
+				case 3: {
+					byte opc2 = 0;
+					do{
+						Print.outSln("0.- Volver");
+						Print.outSln("1.- Resetear el registro de TODOS los Jugadores");
+						Print.outSln("2.- Resetear el registro de un jugador en especifico");
+						opc2 = C.in_byte("Seleccion: ");
+						switch(opc2){
+							case 0:{
+								break;
+							}
+							case 1:{
+								char conf;
+								Print.outSln("Esta segur@ que desea resetear a TODOS los jugadores y/n ");
+								conf = C.in_char("Seleccion: ");
+								if((conf == 'y')|| (conf == 'Y')){
+									for(Jugador jugador : jugadores){
+										jugador.resetear();
+									}
+								}
+								break;
+							}
+							case 2:{
+								String alias = C.in_String("Escriba el alias del Jugador: ");
+								alias = alias.toUpperCase();
+								boolean jugadorEncontrado = false;
+								for(Jugador jugador : jugadores){
+									if(jugador.getAlias().equals(alias)){
+										jugadorEncontrado = true;
+										char conf;
+										Print.outSln("Esta segur@ que desea resetear a: " + jugador.getAlias() 
+												+ " (y/n)");
+										conf = C.in_char("Seleccion: ");
+										if((conf == 'y')|| (conf == 'Y')){
+												jugador.resetear();
+												opc2 = 0;
+												break;
+										}else{
+											break;
+										}
+									}
+								}
+								if(jugadorEncontrado == false){
+									Print.errorCen("Jugador \"" + alias + "\" no encontrado");
+								}
+								
+								break;
+							}
+							default:{
+								Print.errorCen("Seleccion Invalida.");
+								break;
+							}
+						}
+					}while(opc2 != 0);
+					break;
+				}
+				case 4:{
+					try{
+						cargarPalabras(1);
+						}catch(IOException e){
+							Print.error("Las palabras para el nivel no han podido ser cargadas");
+						}
+					break;
 				}
 				
-				case 10:{
+				case 1:{
 					acerca_de();
 					Print.pausa("PRESIONE ENTER PARA CONTINUAR");
-					opc = 0;
-					continue;
+					break;
 					}//case 10
 				default:{
 					Print.errorCen("Seleccion Invalida");
-					opc = 0;
-					continue;
+					break;
 				}//default
 			}//switch
 			
 			//C.espacio(10);
 			//opc = C.in_byte("Si desea Salir del programa Presione 1: ");
 
-		}while(opc != 1);
+		}while(opc != 0);
 
 
 	}//main
@@ -73,18 +145,62 @@ public static byte menu(){
 				Print.separador();
 				Print.espacio(40);
 				Print.outln("Numero de Jugadores registrados: ");// + variable que cuenta el numero de vendedores
+				
 				Print.endl(1);
+				
 				Print.outSln("0.- Salir del Programa");
-				Print.outSln("1.- Ingresar un Jugador");
+				Print.outSln("1.- Acerca del Programa");
+				Print.outSln("2.- Registrar Jugador");
+				Print.outSln("3.- Reiniciar Registro de Jugadores");
 
 				Print.endl(2);
-				Print.outSln("10.- Acerca del Programa");
+				
 				Print.endl(1);
 				opc = C.in_byte("Seleccione una opcion: [  ]\b\b\b");
 		return opc;
 							
 
 	}//menu
+
+	public static boolean cargarJugadores() throws IOException{
+		BufferedReader listaJugadores;
+		File archivoJugadores = new File ("Jugadores.txt");
+		if(archivoJugadores.exists()){
+			String line = "";
+			listaJugadores = new BufferedReader(new FileReader(archivoJugadores));
+			byte cont = 0;int index = 0;
+			while((line = listaJugadores.readLine()) != null) {
+				switch(cont){
+					case 0: {
+						jugadores.add(new Jugador());
+						jugadores.get(index).cargarAlias(line);
+						cont++;
+						break;
+					}
+					case 1:{
+						jugadores.get(index).cargarPuntaje(Integer.parseInt(line));
+						cont++;
+						break;
+					}
+					case 2:{
+						jugadores.get(index).cargarNivel(Integer.parseInt(line));
+						cont++;
+						break;
+					}
+					case 3:{
+						jugadores.get(index).cargarVida(Integer.parseInt(line));
+						cont = 0;
+						index++;
+						break;
+					}
+					
+				}
+			}
+			listaJugadores.close();
+			return true;
+		}
+		return true;
+	}
 
 	public static void cargarPalabras(int nivel) throws IOException{
 		boolean fileFound = false;

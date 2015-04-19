@@ -31,6 +31,42 @@ public class StrFunction{
 		return sum;
 	}
 	
+	/**
+	 * Verifica si contiene algun caracter que no sea numeros o letras
+	 * 
+	 * @param a es la String a evaluar
+	 * @return true si posee caracteres especiales
+	 */
+	public static boolean containsEspecials(String a){
+		for (int j = 0; j < a.length(); j++) {
+			char b = a.charAt(j);
+			if(((b >= 65) && (b <= 90 )) || ((b >= 97) && (b <= 122)) 
+					|| (b >= 48) && ( b <= 57) || (b == 32)){
+				continue;
+			}
+			else{
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	/*
+	public static String removeEspecials(String a){
+		for (int j = 0; j < a.length(); j++) {
+			char b = a.charAt(j);
+			if(((b >= 65) && (b <= 90 )) || ((b >= 97) && (b <= 122)) 
+					|| (b >= 48) && ( b <= 57) || (b == 32)){
+				continue;
+			}
+			else{
+				
+			}
+		}
+		return a;
+		
+	}*/
+	
 	public static int contar_palabra(String cadena, String buscar){
 		cadena = cadena.toLowerCase();
 		buscar = cadena.toLowerCase();

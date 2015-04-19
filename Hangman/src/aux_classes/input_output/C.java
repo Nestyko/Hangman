@@ -1,16 +1,14 @@
 package aux_classes.input_output;
 
-import java.util.Scanner;
+import aux_classes.input_output.KbInput.*;
 
 
 public class C {
 
-	public static Scanner input = new Scanner(System.in);
 
 	public static void pausa(){
 		try{
-		input.nextLine();
-		input.nextLine();
+		KbInput.read();
 		}
 		catch(Exception e){
 			return;
@@ -25,8 +23,8 @@ public class C {
 
 		try{
 			System.out.print("          " + msg);
-			//input.nextLine();
-			a = input.nextLine();
+			//KbInput.read();
+			a = KbInput.read();
 			err = false;
 		}
 		catch(Exception e){
@@ -39,29 +37,21 @@ public class C {
 
 	public static char in_char(String msg){
 		boolean err = true;
-		String character = null;
-		char a = ' ';
+		char character = ' ';
 		do{
 		System.out.print("          " + msg);
 
 		try{
-			character = input.next();
+			character = KbInputChar.read();
 			err = false;
 		}
 		catch(Exception e){
 			Print.errorCen("Debe Ingresar un caracter");
 			err = true;
 		}
-		if(character.length() > 1){
-			Print.errorCen("Debe Ingresar un caracter");
-			err = true;
-		}
-		else{
-			a = character.charAt(0);
-		}
 
 		}while(err);
-		return a;
+		return character;
 	}
 
 	public static double in_double(){
@@ -69,7 +59,7 @@ public class C {
 		boolean err = false;
 		do{
 		try {
-			a = input.nextDouble();
+			a = Double.parseDouble(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -86,7 +76,7 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextDouble();
+			a = Double.parseDouble(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -104,8 +94,38 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextFloat();
+			a = Float.parseFloat(KbInput.read());
 			err = false;
+		}//try
+		catch(Exception e){
+				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
+				err = true;
+			}//catch
+		}while(err);
+
+		return a;
+	}//in_float
+	
+	
+	/**
+	 * Ingresa la nota y ademas valida que sea mayor a 0 y menor o igual a 20
+	 * @param msg
+	 * @return
+	 */
+	public static float in_nota(String msg){
+		float a = (float)0.0;
+		boolean err = false;
+		do{
+		try {
+			System.out.print("          " + msg);
+			a = Float.parseFloat(KbInput.read());
+
+			if((a > 20) || (a < 0)){
+				err = true;
+			}
+			else{
+				err = false;
+			}
 		}//try
 		catch(Exception e){
 				Print.errorCen("Debe ingresar un numero (puede tener decimales)");
@@ -122,7 +142,7 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextInt();
+			a = Integer.parseInt(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -140,7 +160,7 @@ public class C {
 		boolean err = false;
 		do{
 		try {
-			a = input.nextInt();
+			a = Integer.parseInt(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -158,7 +178,7 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextShort();
+			a = Short.parseShort(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -176,7 +196,7 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextByte();
+			a = Byte.parseByte(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -194,7 +214,7 @@ public class C {
 		do{
 		try {
 			System.out.print("          " + msg);
-			a = input.nextLong();
+			a = Long.parseLong(KbInput.read());
 			err = false;
 		}//try
 		catch(Exception e){
@@ -256,6 +276,7 @@ public class C {
 		public static String solo_letras(String a){
 
 			boolean numero = false;
+			boolean especial = false;
 			do{
 				if(a.length() == 0){
 								numero = false;
@@ -284,6 +305,10 @@ public class C {
 
 		return a;
 			}//solo_letras
+		
+		
+	
+		
 
 		//LEER VECTORES
 //Los vectores tienen que estar incializado, es decir, deben de tener un tamaño prestablecido
