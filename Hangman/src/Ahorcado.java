@@ -248,7 +248,7 @@ public static byte menu(){
 		String nombre = "nivel" + nivel + ".txt";
 		while(!fileFound){
 			try{
-				if(ruta != ""){
+				if(ruta == ""){
 					archivoNivel = new BufferedReader(
 							new FileReader(new File (nombre))); 
 					fileFound = true;
