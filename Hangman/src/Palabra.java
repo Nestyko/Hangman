@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Palabra {
 	private String palabra;
@@ -33,6 +35,26 @@ public class Palabra {
 		}
 		
 	}
+	
+	public int buscarLetra(char letra){
+		ArrayList<Integer> coincidencias = buscarCoincidencias(letra);
+		StringBuffer aux = new StringBuffer(oculta);
+		for(Integer coin: coincidencias){
+			aux.replace(coin, coin+1, palabra.charAt(coin)+"");
+		}
+		oculta = aux.toString();
+		return coincidencias.size();
+	}
+	
+	private ArrayList<Integer> buscarCoincidencias(char letra){
+			ArrayList<Integer> coincidencias = new ArrayList<Integer>();
+			for(int i = 0; i < palabra.length(); i++){
+				if(palabra.charAt(i) == letra){
+					coincidencias.add(i);
+				}
+			}
+			return coincidencias;
+		}
 
 
 

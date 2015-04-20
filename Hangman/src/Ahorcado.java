@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Ahorcado{
@@ -14,6 +15,8 @@ public class Ahorcado{
 	public static ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	private static BufferedReader archivoNivel;
 	public static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	public static Random rand = new Random();
+	
 	
 	public static void main(String[] args){
 
@@ -37,6 +40,7 @@ public class Ahorcado{
 					byte opc3;
 					do{
 						Print.cls();
+						Print.outSln("0.- Volver");
 						Print.outSln("1.- Registrar nuevo usuario");
 						Print.outSln("2.- Jugar con un usuario existente");
 						opc3 = C.in_byte("Seleccion: ");
@@ -190,7 +194,7 @@ public static byte menu(){
 				
 				Print.outSln("0.- Salir del Programa");
 				Print.outSln("1.- Acerca del Programa");
-				Print.outSln("2.- Registrar Jugador");
+				Print.outSln("2.- Jugar");
 				Print.outSln("3.- Reiniciar Registro de Jugadores");
 
 				Print.endl(2);
@@ -266,6 +270,8 @@ public static byte menu(){
 			}
 		}
 		
+		palabras.clear();
+		
 		String line = null;
 		try {
 			while(((line=archivoNivel.readLine())!=null)){
@@ -302,6 +308,55 @@ public static byte menu(){
 	
 	public static void jugar(Jugador player){
 		
+		try{
+		cargarPalabras(player.getNivel());
+		}catch(IOException e){
+			Print.errorCen("Error al cargar las palabras del nivel " + player.getNivel());
+		}
+		
+		Palabra palabra = palabras.get(rand.nextInt(palabras.size()));
+		int oportunidades = 5;
+		char letra = ' ';
+		
+		
+		while(oportunidades > 0){
+			Print.outCen("| Nivel " + player.getNivel() + " |");
+		Print.endl(1);
+		String[] datosJugador = {
+			player.getAlias(),
+			"Puntaje: " + player.getPuntaje(),
+			"Vidas: " + player.getVida()
+		};
+		Print.imprimir_fila(datosJugador);
+		Print.endl(1);
+		Print.separador();
+		Print.outCen(palabra.getOculta());
+		Print.separador();
+		Print.endl(4);
+		Print.outS("Oportunidades: " + oportunidades);
+		letra = C.in_char("Escriba una letra: ");
+		int coincidencias = palabra.buscarLetra(letra);
+			if(coincidencias == 0){
+				oportunidades--;
+			}else if(coincidencias  == 1){
+				player.addPuntaje(3);
+			}else if(coincidencias == 2){
+				player.addPuntaje(7);
+			}else if(coincidencias > 2){
+				player.addPuntaje(9);
+			}
+		
+		
+		
+		}
+		
+		
+		
+		
+		
 	}
+	
+	
+	
 
 }
