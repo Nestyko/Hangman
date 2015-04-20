@@ -89,11 +89,7 @@ public class Ahorcado{
 							}
 						}
 					}while(opc3 != 0);
-					
-					
-					
-					
-
+					break;
 				}
 				case 3: {
 					byte opc2 = 0;
@@ -351,6 +347,7 @@ public static byte menu(){
 			}
 		if(palabra.getOculta().equals(palabra.getPalabra())){
 			oportunidades = 5;
+			player.setVida(player.getVida()+1);
 			if(player.getNivel() == 5){
 				Print.cls();
 				Print.endl(5);
