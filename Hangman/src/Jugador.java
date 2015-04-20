@@ -17,6 +17,7 @@ public class Jugador {
 	private Integer puntaje;
 	private Integer nivel;
 	private Integer vida;
+
 	
 	
 	/**
@@ -244,6 +245,41 @@ public class Jugador {
 			int fin = ((this.nivel.toString()).length())+inicio;
 			input.replace(inicio, fin, nivel.toString());
 			this.nivel = nivel;
+			String input2 = input.toString();
+			try{
+				FileOutputStream output = new FileOutputStream("Jugadores.txt");
+				output.write(input2.getBytes());
+				output.close();
+			}catch ( IOException e){
+				Print.errorCen("Error al modificar el Nivel");
+			}
+		
+		}
+	}
+	
+	public void addNivel() {
+		if(this.nivel < 5){
+			this.nivel++;
+		}
+		BufferedReader listaJugadores;
+		File archivoJugadores = new File ("Jugadores.txt");
+		if(archivoJugadores.exists()){
+			String line = "";StringBuffer input = new StringBuffer("");
+			try{
+			listaJugadores = new BufferedReader(new FileReader(archivoJugadores));
+			while((line = listaJugadores.readLine()) != null){
+				input.append(line + "\n");
+			}
+			listaJugadores.close();
+			}catch(FileNotFoundException e1){
+				Print.errorCen("Archivo Jugadores.txt no ha podido ser encontrado");
+			}catch(IOException e2){
+				Print.errorCen("Error al leer el Nivel");
+			}
+			
+			int inicio = (input.indexOf(alias)+alias.length())+2+(puntaje.toString().length());
+			int fin = ((this.nivel.toString()).length())+inicio;
+			input.replace(inicio, fin, nivel.toString());
 			String input2 = input.toString();
 			try{
 				FileOutputStream output = new FileOutputStream("Jugadores.txt");

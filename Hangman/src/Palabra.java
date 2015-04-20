@@ -15,9 +15,12 @@ public class Palabra {
 	 * @param palabraOculta es misma palabra pero oculta
 	 */
 	public Palabra(String palabra) {
-		this.palabra = palabra;
+		this.palabra = palabra.replace(' ', '-');
 		ocultarPalabra();
 	}
+	
+	
+
 
 
 

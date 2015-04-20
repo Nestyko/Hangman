@@ -308,18 +308,21 @@ public static byte menu(){
 	
 	public static void jugar(Jugador player){
 		
-		try{
-		cargarPalabras(player.getNivel());
-		}catch(IOException e){
-			Print.errorCen("Error al cargar las palabras del nivel " + player.getNivel());
-		}
+		do{
 		
-		Palabra palabra = palabras.get(rand.nextInt(palabras.size()));
-		int oportunidades = 5;
-		char letra = ' ';
+		try{
+			cargarPalabras(player.getNivel());
+			}catch(IOException e){
+				Print.errorCen("Error al cargar las palabras del nivel " + player.getNivel());
+			}
+			
+			Palabra palabra = palabras.get(rand.nextInt(palabras.size()));
+			int oportunidades = 5;
+			char letra = ' ';
 		
 		
 		while(oportunidades > 0){
+			Print.cls();
 			Print.outCen("| Nivel " + player.getNivel() + " |");
 		Print.endl(1);
 		String[] datosJugador = {
@@ -331,6 +334,7 @@ public static byte menu(){
 		Print.endl(1);
 		Print.separador();
 		Print.outCen(palabra.getOculta());
+		Print.endl(1);
 		Print.separador();
 		Print.endl(4);
 		Print.outS("Oportunidades: " + oportunidades);
@@ -345,10 +349,34 @@ public static byte menu(){
 			}else if(coincidencias > 2){
 				player.addPuntaje(9);
 			}
-		
-		
-		
+		if(palabra.getOculta().equals(palabra.getPalabra())){
+			oportunidades = 5;
+			if(player.getNivel() == 5){
+				Print.cls();
+				Print.endl(5);
+				Print.outCen("Felicitaciones haz terminado el Juego");
+				Print.pausa();
+			}else{
+				player.addNivel();
+				Print.cls();
+				Print.endl(5);
+				Print.outCen("Felicitaciones haz avanzado al NIVEL " + player.getNivel());
+				Print.pausa();
+			}
+			break;
 		}
+		
+		}//while
+		if(oportunidades == 0){
+			player.setVida(player.getVida()-1);
+			Print.cls();
+			Print.endl(5);
+			Print.outCen("Perdiste una Vida :( ");
+			Print.outCen("Solo te quedan " + player.getVida() + " vidas");
+			Print.pausa();
+		}
+		
+		}while((player.getVida() > 0) && ( player.getNivel() < 5));
 		
 		
 		
