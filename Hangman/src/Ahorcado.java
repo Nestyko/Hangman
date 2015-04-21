@@ -36,35 +36,24 @@ public class Ahorcado{
 					opc = 0;
 					continue;
 					}
-				case 2:{
-					byte opc3;
-					do{
-						Print.cls();
-						Print.outSln("0.- Volver");
-						Print.outSln("1.- Registrar nuevo usuario");
-						Print.outSln("2.- Jugar con un usuario existente");
-						opc3 = C.in_byte("Seleccion: ");
-						switch(opc3){
-						case 0:{
-							break;
+				case 1:{
+					String alias = C.in_String("Ingrese el alias: ");
+					alias = alias.toUpperCase();
+					try{
+						while(!Jugador.validarJugador(alias)){
+							Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
+							alias = C.in_String("Ingrese el alias: ");
 						}
-							case 1:{
-								String alias = C.in_String("Ingrese el alias: ");
-								alias = alias.toUpperCase();
-								try{
-									while(!Jugador.validarJugador(alias)){
-										Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
-										alias = C.in_String("Ingrese el alias: ");
-									}
-								}catch(IOException e){
-									Print.errorCen("Error verificando el alias");
-								}
-								
-								Jugador nuevo = new Jugador(alias);
-								jugadores.add(nuevo);
-								break;
-							}
-							case 2:{
+					}catch(IOException e){
+						Print.errorCen("Error verificando el alias");
+					}
+					
+					Jugador nuevo = new Jugador(alias);
+					jugadores.add(nuevo);
+					break;
+				}
+				case 2:{
+					
 								String alias = C.in_String("Ingrese el alias: ");
 								alias = alias.toUpperCase();
 								try{
@@ -85,10 +74,6 @@ public class Ahorcado{
 								}catch(IOException e){
 									Print.errorCen("Error verificando el alias");
 								}
-								
-							}
-						}
-					}while(opc3 != 0);
 					break;
 				}
 				case 3: {
@@ -159,7 +144,7 @@ public class Ahorcado{
 					break;
 				}
 				
-				case 1:{
+				case 9:{
 					acerca_de();
 					Print.pausa("PRESIONE ENTER PARA CONTINUAR");
 					break;
@@ -192,12 +177,12 @@ public static byte menu(){
 				Print.endl(1);
 				
 				Print.outSln("0.- Salir del Programa");
-				Print.outSln("1.- Acerca del Programa");
+				Print.outSln("1.- Registrar un nuevo Jugador");
 				Print.outSln("2.- Jugar");
 				Print.outSln("3.- Reiniciar Registro de Jugadores");
 
 				Print.endl(2);
-				
+				Print.outSln("9.- Acerca del Programa");
 				Print.endl(1);
 				opc = C.in_byte("Seleccione una opcion: [  ]\b\b\b");
 		return opc;
@@ -308,14 +293,22 @@ public static byte menu(){
 	public static void jugar(Jugador player){
 		
 		do{
-		
+			ArrayList<Integer> palabrasFalladas = new ArrayList<Integer>();
+			Integer aleatorio = 0;
 		try{
 			cargarPalabras(player.getNivel());
 			}catch(IOException e){
 				Print.errorCen("Error al cargar las palabras del nivel " + player.getNivel());
 			}
+			if(palabras.size() <= palabrasFalladas.size()){
+				palabrasFalladas.clear();
+			}
+				while(palabrasFalladas.contains(aleatorio)){
+				aleatorio = rand.nextInt(palabras.size());
+				palabrasFalladas.add(aleatorio);
+			}
 			
-			Palabra palabra = palabras.get(rand.nextInt(palabras.size()));
+			Palabra palabra = palabras.get(aleatorio);
 			int oportunidades = 5;
 			String letra = "";
 			String letrasFalladas = "";
@@ -366,6 +359,7 @@ public static byte menu(){
 			}
 		if(palabra.getOculta().equals(palabra.getPalabra())){
 			oportunidades = 5;
+			palabrasFalladas.clear();
 			player.setVida(player.getVida()+1);
 			if(player.getNivel() == 5){
 				Print.cls();
@@ -376,6 +370,8 @@ public static byte menu(){
 				player.addNivel();
 				Print.cls();
 				Print.endl(5);
+				Print.outCen("**********************  " + palabra.getPalabra() + "  **********************");
+				Print.endl(2);
 				Print.outCen("Felicitaciones haz avanzado al NIVEL " + player.getNivel());
 				Print.pausa();
 			}

@@ -30,7 +30,7 @@ public class Jugador {
 	public Jugador(String nombre) {
 		this.alias = nombre.toUpperCase();
 		this.puntaje = 0;
-		this.nivel = 0;
+		this.nivel = 1;
 		this.vida = 3;
 		try{
 			archivarJugador();
