@@ -39,7 +39,7 @@ public class Palabra {
 		
 	}
 	
-	public int buscarLetra(char letra){
+	public int buscarLetra(String letra){
 		ArrayList<Integer> coincidencias = buscarCoincidencias(letra);
 		StringBuffer aux = new StringBuffer(oculta);
 		for(Integer coin: coincidencias){
@@ -49,10 +49,10 @@ public class Palabra {
 		return coincidencias.size();
 	}
 	
-	private ArrayList<Integer> buscarCoincidencias(char letra){
+	private ArrayList<Integer> buscarCoincidencias(String letra){
 			ArrayList<Integer> coincidencias = new ArrayList<Integer>();
 			for(int i = 0; i < palabra.length(); i++){
-				if(palabra.charAt(i) == letra){
+				if(palabra.charAt(i) == letra.charAt(0)){
 					coincidencias.add(i);
 				}
 			}

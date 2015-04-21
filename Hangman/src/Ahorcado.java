@@ -74,7 +74,7 @@ public class Ahorcado{
 									}else{
 										int index = 0;
 										for(int i = 0; i< jugadores.size();i++){
-											if(jugadores.get(i).getAlias() == alias){
+											if(jugadores.get(i).getAlias().equals(alias)){
 												index = i;
 												break;
 											}
@@ -271,7 +271,7 @@ public static byte menu(){
 		String line = null;
 		try {
 			while(((line=archivoNivel.readLine())!=null)){
-				Palabra nueva = new Palabra(line);
+				Palabra nueva = new Palabra(line.toUpperCase());
 				palabras.add(nueva);
 			}
 		} catch (IOException e) {
@@ -314,7 +314,9 @@ public static byte menu(){
 			
 			Palabra palabra = palabras.get(rand.nextInt(palabras.size()));
 			int oportunidades = 5;
-			char letra = ' ';
+			String letra = "";
+			String letrasFalladas = "";
+			String letrasUsadas = "";
 		
 		
 		while(oportunidades > 0){
@@ -333,10 +335,24 @@ public static byte menu(){
 		Print.endl(1);
 		Print.separador();
 		Print.endl(4);
+		if(letrasFalladas.length() > 0){
+			Print.outS("Letras utilizadas: ");
+			for(int i = 0; i < letrasFalladas.length();i++){
+				System.out.print(letrasFalladas.charAt(i) + " ");
+			}
+			Print.endl(1);
+		}
 		Print.outS("Oportunidades: " + oportunidades);
-		letra = C.in_char("Escriba una letra: ");
+		letra = C.solo_una_letra(C.in_String("Escriba una letra: "));
+		letra = letra.toUpperCase();
+		if(letrasUsadas.contains(letra)){
+			continue;
+		}
+		letrasUsadas += letra;
 		int coincidencias = palabra.buscarLetra(letra);
 			if(coincidencias == 0){
+				player.addPuntaje(-4);
+				letrasFalladas += letra;
 				oportunidades--;
 			}else if(coincidencias  == 1){
 				player.addPuntaje(3);
@@ -368,8 +384,8 @@ public static byte menu(){
 			player.setVida(player.getVida()-1);
 			Print.cls();
 			Print.endl(5);
-			Print.outCen("Perdiste una Vida :( ");
-			Print.outCen("Solo te quedan " + player.getVida() + " vidas");
+			Print.outCenln("Perdiste una Vida :( ");
+			Print.outCenln("Solo te quedan " + player.getVida() + " vidas");
 			Print.pausa();
 		}
 		

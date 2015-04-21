@@ -306,6 +306,31 @@ public class C {
 		return a;
 			}//solo_letras
 		
+		/**
+		 * solo permite ingresar una letra
+		 * @param a es la letra a comprobar
+		 * @return la misma letra
+		 */
+		public static String solo_una_letra(String a){
+			boolean valida = false;
+			while(!valida){
+				if(a.length() > 1){
+					valida = false;
+					a = in_String("Ingrese SOLO una letra:");
+				}else{
+					char e = a.charAt(0);
+					if (((e >= 65) && (e <= 90)) || ((e <= 122) && ( e >= 97))){
+						valida = true;
+					}else{
+						valida = false;
+						a = in_String("Ingrese SOLO una letra:");
+					}
+				}
+				
+			}
+			
+			return a;
+		}
 		
 	
 		
