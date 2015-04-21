@@ -46,7 +46,7 @@ public class Jugador {
 	public Jugador() {
 		this.alias = "";
 		this.puntaje = 0;
-		this.nivel = 0;
+		this.nivel = 1;
 		this.vida = 3;
 		
 	}
@@ -145,11 +145,14 @@ public class Jugador {
 	public void resetear(){
 		setPuntaje(0);
 		setVida(3);
-		setNivel(0);
+		setNivel(1);
 	}
 
 
 	public void setPuntaje(Integer puntaje) {
+		if(puntaje < 0){
+			puntaje = 0;
+		}
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
 		if(archivoJugadores.exists()){
@@ -185,6 +188,9 @@ public class Jugador {
 	
 	public void addPuntaje(Integer puntaje) {
 		puntaje = this.puntaje+puntaje;
+		if(puntaje < 0){
+			puntaje = 0;
+		}
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
 		if(archivoJugadores.exists()){

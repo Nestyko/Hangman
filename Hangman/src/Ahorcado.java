@@ -109,6 +109,7 @@ public class Ahorcado{
 								if((conf == 'y')|| (conf == 'Y')){
 									for(Jugador jugador : jugadores){
 										jugador.resetear();
+										Print.pausa("Todos los jugadores han sido reseteados");
 									}
 								}
 								break;
@@ -126,6 +127,7 @@ public class Ahorcado{
 										conf = C.in_char("Seleccion: ");
 										if((conf == 'y')|| (conf == 'Y')){
 												jugador.resetear();
+												Print.pausa("El jugador \"" + jugador.getAlias() + "\" ha sido reseteado"); 
 												opc2 = 0;
 												break;
 										}else{
@@ -144,6 +146,7 @@ public class Ahorcado{
 								break;
 							}
 						}
+						break;
 					}while(opc2 != 0);
 					break;
 				}
