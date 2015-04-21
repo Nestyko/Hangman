@@ -30,8 +30,8 @@ public class Palabra {
 	private void ocultarPalabra(){
 		this.oculta = "";
 		for (int i = 0; i < palabra.length(); i++) {
-			if(palabra.charAt(i) == ' '){
-				this.oculta += " - ";
+			if(palabra.charAt(i) == '-'){
+				this.oculta += "-";
 			}else{
 				this.oculta += "*";
 			}

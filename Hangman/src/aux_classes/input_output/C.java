@@ -27,6 +27,10 @@ public class C {
 			a = KbInput.read();
 			err = false;
 		}
+		catch(IndexOutOfBoundsException e){
+			Print.errorCen("Debe Ingresar una cadena de caracteres");
+			err = true;
+		}
 		catch(Exception e){
 			Print.errorCen("Debe Ingresar una cadena de caracteres");
 			err = true;
@@ -314,7 +318,7 @@ public class C {
 		public static String solo_una_letra(String a){
 			boolean valida = false;
 			while(!valida){
-				if(a.length() > 1){
+				if(a.length() != 1){
 					valida = false;
 					a = in_String("Ingrese SOLO una letra:");
 				}else{

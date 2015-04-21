@@ -303,11 +303,10 @@ public static byte menu(){
 			if(palabras.size() <= palabrasFalladas.size()){
 				palabrasFalladas.clear();
 			}
-				while(palabrasFalladas.contains(aleatorio)){
+				do{
 				aleatorio = rand.nextInt(palabras.size());
+			}while((palabrasFalladas.contains(aleatorio)) && (palabrasFalladas.size() > 0));
 				palabrasFalladas.add(aleatorio);
-			}
-			
 			Palabra palabra = palabras.get(aleatorio);
 			int oportunidades = 5;
 			String letra = "";
@@ -346,6 +345,7 @@ public static byte menu(){
 		}
 		letrasUsadas += letra;
 		int coincidencias = palabra.buscarLetra(letra);
+		if(player.getNivel() < 5){
 			if(coincidencias == 0){
 				player.addPuntaje(-4);
 				letrasFalladas += letra;
@@ -357,22 +357,48 @@ public static byte menu(){
 			}else if(coincidencias > 2){
 				player.addPuntaje(9);
 			}
+		}else{
+			if(coincidencias == 0){
+				player.addPuntaje(-4);
+				letrasFalladas += letra;
+				oportunidades--;
+			}else if(coincidencias  == 1){
+				player.addPuntaje(7);
+			}else if(coincidencias == 2){
+				player.addPuntaje(9);
+			}else if(coincidencias > 2){
+				player.addPuntaje(11);
+			}
+		}
 		if(palabra.getOculta().equals(palabra.getPalabra())){
 			oportunidades = 5;
 			palabrasFalladas.clear();
+			
 			player.setVida(player.getVida()+1);
 			if(player.getNivel() == 5){
+				player.addPuntaje(15);
+				player.setNivel(1);
+				player.addVida(2);
 				Print.cls();
+				Print.outCen("HA FINALIZADO CON VIDA SU MISION");
 				Print.endl(5);
-				Print.outCen("Felicitaciones haz terminado el Juego");
 				Print.pausa();
 			}else{
-				player.addNivel();
+				player.addPuntaje(10);
 				Print.cls();
 				Print.endl(5);
 				Print.outCen("**********************  " + palabra.getPalabra() + "  **********************");
 				Print.endl(2);
-				Print.outCen("Felicitaciones haz avanzado al NIVEL " + player.getNivel());
+				Print.outCen("Felicitaciones deseas avanzar al nivel " + (player.getNivel()+1) + "? y/n");
+				char s = C.in_char("");
+				if((s == 'y') || (s == 'Y')){
+					player.addNivel();
+					Print.cls();
+					Print.outCen("Felicitaciones has avanzado al nivel " + player.getNivel());
+				}else{
+					Print.cls();
+					Print.outCen("Continuas en el nivel " + player.getNivel());
+				}
 				Print.pausa();
 			}
 			break;
@@ -382,9 +408,16 @@ public static byte menu(){
 		if(oportunidades == 0){
 			player.setVida(player.getVida()-1);
 			Print.cls();
-			Print.endl(5);
-			Print.outCenln("Perdiste una Vida :( ");
+			if(player.getVida() == 0){
+				Print.outCen("LO SENTIMOS PERO LAMENTABLEMENTE FUE AHORCADO");
+				player.eliminar();
+				Print.endl(5);
+			}else{
+				Print.outCenln("Perdiste una Vida :( ");
 			Print.outCenln("Solo te quedan " + player.getVida() + " vidas");
+			Print.endl(5);
+			}
+			
 			Print.pausa();
 		}
 		
