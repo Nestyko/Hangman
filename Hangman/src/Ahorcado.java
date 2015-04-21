@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 
@@ -21,12 +22,13 @@ public class Ahorcado{
 	public static void main(String[] args){
 
 			byte opc;
-			try{
+			
+			do{
+				try{
 			cargarJugadores();
 			}catch(IOException e){
 				Print.errorCen("Error al cargar los jugadores");
 			}
-			do{
 			Print.cls();
 			opc = menu();
 			
@@ -39,42 +41,33 @@ public class Ahorcado{
 				case 1:{
 					String alias = C.in_String("Ingrese el alias: ");
 					alias = alias.toUpperCase();
-					try{
-						while(!Jugador.validarJugador(alias)){
+						while(verificarJugador(alias)){
 							Print.errorCen("Este alias ya esta registrado, por favor elija otro" );
 							alias = C.in_String("Ingrese el alias: ");
 						}
-					}catch(IOException e){
-						Print.errorCen("Error verificando el alias");
-					}
+
 					
 					Jugador nuevo = new Jugador(alias);
 					jugadores.add(nuevo);
 					break;
 				}
-				case 2:{
+				case 4:{
 					
 								String alias = C.in_String("Ingrese el alias: ");
 								alias = alias.toUpperCase();
-								try{
-									if(Jugador.validarJugador(alias)){
-										Print.errorCen("Este Jugador no esta registrado" );
-										break;
-									}else{
-										int index = 0;
-										for(int i = 0; i< jugadores.size();i++){
-											if(jugadores.get(i).getAlias().equals(alias)){
-												index = i;
-												break;
-											}
-										}
-										jugar(jugadores.get(index));
-
+								int index = -1;
+								for(int i = 0; i< jugadores.size(); i++){
+									if( jugadores.get(i).getAlias().equals(alias)){
+										index = i;
 									}
-								}catch(IOException e){
-									Print.errorCen("Error verificando el alias");
 								}
-					break;
+								if(index != -1){
+									jugar(jugadores.get(index));
+								}else{
+									Print.errorCen("Este Jugador no esta registrado" );
+								}
+								break;
+								
 				}
 				case 3: {
 					byte opc2 = 0;
@@ -107,6 +100,8 @@ public class Ahorcado{
 									if(jugador.getAlias().equals(alias)){
 										jugadorEncontrado = true;
 										char conf;
+										jugador.info();
+										Print.endl(1);
 										Print.outSln("Esta segur@ que desea resetear a: " + jugador.getAlias() 
 												+ " (y/n)");
 										conf = C.in_char("Seleccion: ");
@@ -135,12 +130,23 @@ public class Ahorcado{
 					}while(opc2 != 0);
 					break;
 				}
-				case 4:{
-					try{
-						cargarPalabras(1);
-						}catch(IOException e){
-							Print.error("Las palabras para el nivel no han podido ser cargadas");
+				case 2:{
+					
+						for(int j = 0; j < jugadores.size()-1;j++){
+							for(int i = 0; i < jugadores.size()-1; i++){
+								if(jugadores.get(i).getPuntaje() < jugadores.get(i+1).getPuntaje()){
+									Jugador aux = jugadores.get(i);
+									jugadores.set(i, jugadores.get(i+1));
+									jugadores.set(i+1, aux);
+								}
 						}
+					}
+					for(Jugador player : jugadores){
+						
+						player.info();
+						Print.endl(1);
+					}
+					Print.pausa("PRESIONE ENTER PARA CONTINUAR");
 					break;
 				}
 				
@@ -178,9 +184,9 @@ public static byte menu(){
 				
 				Print.outSln("0.- Salir del Programa");
 				Print.outSln("1.- Registrar un nuevo Jugador");
-				Print.outSln("2.- Jugar");
+				Print.outSln("2.- Mostrar Jugadores");
 				Print.outSln("3.- Reiniciar Registro de Jugadores");
-
+				Print.outSln("4.- Jugar");
 				Print.endl(2);
 				Print.outSln("9.- Acerca del Programa");
 				Print.endl(1);
@@ -191,6 +197,7 @@ public static byte menu(){
 	}//menu
 
 	public static boolean cargarJugadores() throws IOException{
+		jugadores.clear();
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
 		if(archivoJugadores.exists()){
@@ -228,6 +235,20 @@ public static byte menu(){
 			return true;
 		}
 		return true;
+	}
+	
+	/**
+	 * Verifica que el alias ya se encuentre registrado
+	 * @param alias
+	 * @return true si se encuentra el jugador registrado
+	 */
+	public static boolean verificarJugador(String alias){
+		for(Jugador player : jugadores){
+			if(player.getAlias().equals(alias)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void cargarPalabras(int nivel) throws IOException{
@@ -422,10 +443,6 @@ public static byte menu(){
 		}
 		
 		}while((player.getVida() > 0) && ( player.getNivel() < 5));
-		
-		
-		
-		
 		
 	}
 	

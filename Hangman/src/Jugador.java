@@ -51,6 +51,15 @@ public class Jugador {
 		
 	}
 	
+	public void info(){
+		Print.separador();
+		Print.outCenln(alias);
+		Print.separador();
+		Print.outSln("Puntaje: " + puntaje);
+		Print.outSln("Nivel: " + nivel);
+		Print.outSln("Vidas: " + vida);
+	}
+	
 	/**
 	 * Writes the outline in the file and then adds a '\n'
 	 * @param output is the file to write on
@@ -74,30 +83,7 @@ public class Jugador {
 	}
 	
 	
-	/**
-	 * Verifica que el alias no este repetido en el archivo Jugadores.txt
-	 * @param alias es el nombre del jugador a buscar en el archivo
-	 * @return false si esta repetido, retorna true si de lo contrario o si no se encuentra el archivo.
-	 * @throws IOException
-	 */
-	public static boolean validarJugador(String alias) throws IOException {
-		BufferedReader listaJugadores;
-		File archivoJugadores = new File ("Jugadores.txt");
-		if(archivoJugadores.exists()){
-			String line = "";
-			listaJugadores = new BufferedReader(new FileReader(archivoJugadores));
-			while((line = listaJugadores.readLine()) != null){
-				if(alias.equalsIgnoreCase(line)){
-					listaJugadores.close();
-					return false;
-				}
-			}
-			listaJugadores.close();
-			return true;
-		}
-		return true;
-		
-	}
+	
 
 
 	public String getAlias() {
