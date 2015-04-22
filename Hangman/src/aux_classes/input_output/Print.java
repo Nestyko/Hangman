@@ -158,23 +158,14 @@ public static void pausa(){
 	//Llena la pantalla si empieza en el espacio 8
 
 public static  void imprimir_fila(String[] vec){
-	if (vec.length > 6){
-	for (int i = 0; i < 6;i++){
-					Print.out(vec[i]);
-					if(i < 6){
-					Print.espacio(12-((vec[i]).length()));
-				}//if
-				}//for
-			}//if
-		else{
-			for (int i = 0; i < vec.length;i++){
-								Print.out(vec[i]);
-								if(i < vec.length){
-								Print.espacio(12-((vec[i]).length()));
-							}//if
-				}//for
-			}//else
-		}//imprimir
+	Print.espacio(10);
+	for(int i = 0; i < vec.length ; i++){
+		Print.out(vec[i]);
+		Print.espacio(5);
+	}
+	Print.endl(1);
+}
+	
 
 		//Empieza el vector desde la posicion i
 

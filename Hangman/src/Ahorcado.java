@@ -30,8 +30,7 @@ public class Ahorcado{
 				Print.errorCen("Error al cargar los jugadores");
 			}
 			Print.cls();
-			opc = menu();
-			
+				opc = menu();
 			Print.cls();
 			switch(opc){
 				case 0:{
@@ -178,18 +177,24 @@ public static byte menu(){
 				Print.endl(1);
 				Print.separador();
 				Print.espacio(40);
-				Print.outln("Numero de Jugadores registrados: ");// + variable que cuenta el numero de vendedores
+				Print.outln("Numero de Jugadores registrados: " + jugadores.size());
 				
 				Print.endl(1);
-				
 				Print.outSln("0.- Salir del Programa");
-				Print.outSln("1.- Registrar un nuevo Jugador");
-				Print.outSln("2.- Mostrar Jugadores");
-				Print.outSln("3.- Reiniciar Registro de Jugadores");
-				Print.outSln("4.- Jugar");
-				Print.endl(2);
-				Print.outSln("9.- Acerca del Programa");
-				Print.endl(1);
+				if(jugadores.size() == 0){
+					Print.outSln("1.- Registrar un nuevo Jugador");
+					Print.endl(2);
+					Print.outSln("9.- Acerca del Programa");
+					Print.endl(1);
+				}else{
+					Print.outSln("1.- Registrar un nuevo Jugador");
+					Print.outSln("2.- Mostrar Jugadores");
+					Print.outSln("3.- Reiniciar Registro de Jugadores");
+					Print.outSln("4.- Jugar");
+					Print.endl(2);
+					Print.outSln("9.- Acerca del Programa");
+					Print.endl(1);
+				}
 				opc = C.in_byte("Seleccione una opcion: [  ]\b\b\b");
 		return opc;
 							
@@ -197,6 +202,7 @@ public static byte menu(){
 	}//menu
 
 	public static boolean cargarJugadores() throws IOException{
+		Jugador.limpiarArchivo(new File("Jugadores.txt"));
 		jugadores.clear();
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
@@ -280,6 +286,7 @@ public static byte menu(){
 		String line = null;
 		try {
 			while(((line=archivoNivel.readLine())!=null)){
+				line = line.trim();
 				Palabra nueva = new Palabra(line.toUpperCase());
 				palabras.add(nueva);
 			}
@@ -306,16 +313,19 @@ public static byte menu(){
 	System.out.println("Seccion N-511");
 	System.out.println("\n\n");
 	System.out.print("          ");
-	System.out.println("Repositorio del programa disponible en:\nURL: https://github.com/Nestyko/Hangman");
+	System.out.println("Repositorio del programa disponible en:\nURL: "
+			+ "          https://github.com/Nestyko/Hangman");
 	System.out.print("\n");
 	
 	}//acerca_de
 	
 	public static void jugar(Jugador player){
-		
+		boolean terminado = false;
+		Integer partidas = 0;
+		ArrayList<Integer> palabrasFalladas = new ArrayList<Integer>();
+		Integer aleatorio = 0;
 		do{
-			ArrayList<Integer> palabrasFalladas = new ArrayList<Integer>();
-			Integer aleatorio = 0;
+			
 		try{
 			cargarPalabras(player.getNivel());
 			}catch(IOException e){
@@ -334,15 +344,16 @@ public static byte menu(){
 			String letrasFalladas = "";
 			String letrasUsadas = "";
 		
-		
 		while(oportunidades > 0){
+			
 			Print.cls();
 			Print.outCen("| Nivel " + player.getNivel() + " |");
-		Print.endl(1);
+		Print.endl(3);
 		String[] datosJugador = {
 			player.getAlias(),
 			"Puntaje: " + player.getPuntaje(),
-			"Vidas: " + player.getVida()
+			"Vidas: " + player.getVida(),
+			"Partidas ganadas: " + partidas
 		};
 		Print.imprimir_fila(datosJugador);
 		Print.endl(1);
@@ -392,35 +403,50 @@ public static byte menu(){
 			}
 		}
 		if(palabra.getOculta().equals(palabra.getPalabra())){
+			Print.endl(5);
+			Print.outCenln("**********************  " + palabra.getPalabra() + "  **********************");
+			Print.endl(1);
+			Print.outCenln("Felicitaciones");
+			Print.pausa();
+			partidas++;
 			oportunidades = 5;
-			palabrasFalladas.clear();
 			
-			player.setVida(player.getVida()+1);
-			if(player.getNivel() == 5){
-				player.addPuntaje(15);
-				player.setNivel(1);
-				player.addVida(2);
-				Print.cls();
-				Print.outCen("HA FINALIZADO CON VIDA SU MISION");
-				Print.endl(5);
-				Print.pausa();
-			}else{
-				player.addPuntaje(10);
-				Print.cls();
-				Print.endl(5);
-				Print.outCen("**********************  " + palabra.getPalabra() + "  **********************");
-				Print.endl(2);
-				Print.outCen("Felicitaciones deseas avanzar al nivel " + (player.getNivel()+1) + "? y/n");
-				char s = C.in_char("");
-				if((s == 'y') || (s == 'Y')){
-					player.addNivel();
+			if(partidas == 5){
+				
+				partidas = 0;
+				if(player.getNivel() == 5){
+					palabrasFalladas.clear();
+					player.addPuntaje(15);
+					player.setNivel(1);
+					player.addVida(2);
 					Print.cls();
-					Print.outCen("Felicitaciones has avanzado al nivel " + player.getNivel());
+					Print.outCenln("HA FINALIZADO CON VIDA SU MISION");
+					Print.endl(2);
+					player.info();
+					terminado = true;
+					Print.pausa();
+					break;
 				}else{
+					player.addPuntaje(10);
+					palabrasFalladas.clear();
 					Print.cls();
-					Print.outCen("Continuas en el nivel " + player.getNivel());
+					Print.endl(2);
+					player.addVida(1);
+					player.addNivel();
+					Print.outCen("Felicitaciones deseas jugar el nivel " + (player.getNivel()) + "? y/n");
+					char s = C.in_char("");
+					if((s == 'y') || (s == 'Y')){
+						Print.cls();
+					}else{
+						Print.cls();
+						Print.outCen("Hasta Luego");
+						Print.pausa();
+						terminado = true;
+						break;
+					}
+					Print.pausa();
 				}
-				Print.pausa();
+				
 			}
 			break;
 		}
@@ -442,7 +468,7 @@ public static byte menu(){
 			Print.pausa();
 		}
 		
-		}while((player.getVida() > 0) && ( player.getNivel() < 5));
+		}while((player.getVida() > 0) && (!terminado));
 		
 	}
 	

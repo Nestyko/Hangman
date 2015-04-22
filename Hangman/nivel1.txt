@@ -13,10 +13,9 @@ vista
 reloj
 firma
 diente
-uña
 portal
 huevo
-misa 
+misa
 ana
 pizza
 mono

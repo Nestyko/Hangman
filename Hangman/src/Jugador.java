@@ -134,7 +134,55 @@ public class Jugador {
 		setNivel(1);
 	}
 	
+	public static void limpiarArchivo(File archi){
+		BufferedReader lista;
+		if(archi.exists()){
+			String line = ""; StringBuffer input =  new StringBuffer("");
+			try{
+				lista = new BufferedReader(new FileReader(archi));
+				
+				while((line = lista.readLine())!= null){
+					input.append(line.trim() + "\n");
+				}
+				lista.close();
+			}catch(Exception e){
+				Print.errorCen("Error al leer el archivo");
+			}
+			if(input.length() > 1){
+			try{
+				while(input.charAt(0) == '\n'){
+				input.delete(0, 1);
+				}
+				for(int i = 0; i < (input.length()-2) ; i++){
+				if((input.charAt(i) == '\n') && (input.charAt(i+1) == '\n')){
+					if(input.charAt(i+2) == '\n'){
+						input.delete(i+1, i+2);
+					}else{
+						input.delete(i, i+1);
+					}
+					
+				}
+			}
+			
+			
+			}catch(Exception e){
+				
+			}
+			}
+			
+			String input2 = input.toString();
+			try{
+				FileOutputStream output = new FileOutputStream(archi);
+				output.write(input2.getBytes());
+				output.close();
+			}catch ( IOException e){
+				Print.errorCen("Error al escribir en archivo");
+			}
+		}
+	}
+	
 	public void eliminar() {
+		limpiarArchivo(new File("Jugadores.txt"));
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
 		if(archivoJugadores.exists()){
@@ -152,6 +200,9 @@ public class Jugador {
 			}
 			
 			int inicio = (input.indexOf(alias)-1);
+			if(inicio < 0){
+				inicio = 0;
+			}
 			int fin = ((this.alias).length())+inicio+(this.puntaje.toString().length()+1)
 					+ (this.nivel.toString().length()+1) + (this.vida.toString().length()+1);
 			input.replace(inicio, fin, "");
@@ -163,6 +214,7 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al eliminar la jugador");
 			}
+			limpiarArchivo(new File("Jugadores.txt"));
 		
 		}
 	}
