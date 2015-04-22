@@ -211,6 +211,8 @@ public static byte menu(){
 			listaJugadores = new BufferedReader(new FileReader(archivoJugadores));
 			byte cont = 0;int index = 0;
 			while((line = listaJugadores.readLine()) != null) {
+				line = line.trim();
+				if((!line.equals("")) && (!line.equals("\n"))){
 				switch(cont){
 					case 0: {
 						jugadores.add(new Jugador());
@@ -236,6 +238,7 @@ public static byte menu(){
 					}
 					
 				}
+			}
 			}
 			listaJugadores.close();
 			return true;
