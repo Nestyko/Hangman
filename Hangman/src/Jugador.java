@@ -12,18 +12,18 @@ import aux_classes.input_output.Print;
 
 
 public class Jugador {
-	
+
 	private String alias;
 	private Integer puntaje;
 	private Integer nivel;
 	private Integer vida;
 
-	
-	
+
+
 	/**
 	 * Constructor por defecto donde se ingresan los nuevos jugadores que van a comenzar a jugar
 	 * @param nombre Alias del jugador
-	 * @param puntaje 
+	 * @param puntaje
 	 * @param nivel del 1 al 5
 	 * @param vida las vidas del Jugador (empieza con 3 vidas)
 	 */
@@ -37,9 +37,9 @@ public class Jugador {
 		}catch(IOException e){
 			Print.errorCen("No se pudo archivar el jugador: " + nombre);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Constructor para crear un jugador temporal que no se guardara en el archivo
 	 */
@@ -48,9 +48,9 @@ public class Jugador {
 		this.puntaje = 0;
 		this.nivel = 1;
 		this.vida = 3;
-		
+
 	}
-	
+
 	public void info(){
 		Print.separador();
 		Print.outCenln(alias);
@@ -59,7 +59,7 @@ public class Jugador {
 		Print.outSln("Nivel: " + nivel);
 		Print.outSln("Vidas: " + vida);
 	}
-	
+
 	/**
 	 * Writes the outline in the file and then adds a '\n'
 	 * @param output is the file to write on
@@ -81,15 +81,11 @@ public class Jugador {
 		}
 
 	}
-	
-	
-	
-
 
 	public String getAlias() {
 		return alias;
 	}
-	
+
 	public void setAlias(String alias){
 		BufferedReader listaJugadores;
 		File archivoJugadores = new File ("Jugadores.txt");
@@ -106,7 +102,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el Alias");
 			}
-			
+
 			int inicio = (input.indexOf(alias));
 			int fin = ((this.alias).length())+inicio;
 			input.replace(inicio, fin, puntaje.toString());
@@ -119,7 +115,7 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar Alias");
 			}
-		
+
 		}
 	}
 
@@ -127,20 +123,20 @@ public class Jugador {
 	public Integer getPuntaje() {
 		return puntaje;
 	}
-	
+
 	public void resetear(){
 		setPuntaje(0);
 		setVida(3);
 		setNivel(1);
 	}
-	
+
 	public static void limpiarArchivo(File archi){
 		BufferedReader lista;
 		if(archi.exists()){
 			String line = ""; StringBuffer input =  new StringBuffer("");
 			try{
 				lista = new BufferedReader(new FileReader(archi));
-				
+
 				while((line = lista.readLine())!= null){
 					input.append(line.trim() + "\n");
 				}
@@ -160,16 +156,16 @@ public class Jugador {
 					}else{
 						input.delete(i, i+1);
 					}
-					
+
 				}
 			}
-			
-			
+
+
 			}catch(Exception e){
-				
+
 			}
 			}
-			
+
 			String input2 = input.toString();
 			try{
 				FileOutputStream output = new FileOutputStream(archi);
@@ -180,7 +176,7 @@ public class Jugador {
 			}
 		}
 	}
-	
+
 	public void eliminar() {
 		limpiarArchivo(new File("Jugadores.txt"));
 		BufferedReader listaJugadores;
@@ -198,7 +194,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el Alias");
 			}
-			
+
 			int inicio = (input.indexOf(alias)-1);
 			if(inicio < 0){
 				inicio = 0;
@@ -215,7 +211,7 @@ public class Jugador {
 				Print.errorCen("Error al eliminar la jugador");
 			}
 			limpiarArchivo(new File("Jugadores.txt"));
-		
+
 		}
 	}
 
@@ -239,7 +235,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el puntaje");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+1;
 			int fin = ((this.puntaje+"").length())+inicio;
 			input.replace(inicio, fin, puntaje.toString());
@@ -252,11 +248,11 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar el puntaje");
 			}
-		
+
 		}
-		
+
 	}
-	
+
 	public void addPuntaje(Integer puntaje) {
 		puntaje = this.puntaje+puntaje;
 		if(puntaje < 0){
@@ -277,7 +273,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el puntaje");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+1;
 			int fin = ((this.puntaje+"").length())+inicio;
 			input.replace(inicio, fin, puntaje.toString());
@@ -290,9 +286,9 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar el puntaje");
 			}
-		
+
 		}
-		
+
 	}
 
 
@@ -317,7 +313,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el Nivel");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+2+(puntaje.toString().length());
 			int fin = ((this.nivel.toString()).length())+inicio;
 			input.replace(inicio, fin, nivel.toString());
@@ -330,10 +326,10 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar el Nivel");
 			}
-		
+
 		}
 	}
-	
+
 	public void addNivel() {
 		if(this.nivel < 5){
 			this.nivel++;
@@ -353,7 +349,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer el Nivel");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+2+(puntaje.toString().length());
 			int fin = ((this.nivel.toString()).length())+inicio;
 			input.replace(inicio, fin, nivel.toString());
@@ -365,7 +361,7 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar el Nivel");
 			}
-		
+
 		}
 	}
 
@@ -373,19 +369,19 @@ public class Jugador {
 	public Integer getVida() {
 		return vida;
 	}
-	
+
 	public void cargarAlias(String alias){
 		this.alias = alias;
 	}
-	
+
 	public void cargarPuntaje(Integer puntaje){
 		this.puntaje = puntaje;
 	}
-	
+
 	public void cargarNivel(Integer nivel){
 		this.nivel = nivel;
 	}
-	
+
 	public void cargarVida(Integer vida){
 		this.vida = vida;
 	}
@@ -407,7 +403,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer las Vidas");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+3+(puntaje.toString().length())
 					+(nivel.toString().length());
 			int fin = ((this.vida.toString()).length())+inicio;
@@ -421,10 +417,10 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar la Vida");
 			}
-		
+
 		}
 	}
-	
+
 	public void addVida(Integer vida) {
 		vida = this.vida+vida;
 		BufferedReader listaJugadores;
@@ -442,7 +438,7 @@ public class Jugador {
 			}catch(IOException e2){
 				Print.errorCen("Error al leer las Vidas");
 			}
-			
+
 			int inicio = (input.indexOf(alias)+alias.length())+3+(puntaje.toString().length())
 					+(nivel.toString().length());
 			int fin = ((this.vida.toString()).length())+inicio;
@@ -456,11 +452,11 @@ public class Jugador {
 			}catch ( IOException e){
 				Print.errorCen("Error al modificar la Vida");
 			}
-		
+
 		}
 	}
-	
-	
-	
+
+
+
 
 }

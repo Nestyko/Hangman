@@ -12,17 +12,16 @@ import java.util.Random;
 
 
 public class Ahorcado{
-	
+
 	public static ArrayList<Palabra> palabras = new ArrayList<Palabra>();
 	private static BufferedReader archivoNivel;
 	public static ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	public static Random rand = new Random();
-	
-	
+
+
 	public static void main(String[] args){
 
 			byte opc;
-			
 			do{
 				try{
 			cargarJugadores();
@@ -45,13 +44,13 @@ public class Ahorcado{
 							alias = C.in_String("Ingrese el alias: ");
 						}
 
-					
+
 					Jugador nuevo = new Jugador(alias);
 					jugadores.add(nuevo);
 					break;
 				}
 				case 4:{
-					
+
 								String alias = C.in_String("Ingrese el alias: ");
 								alias = alias.toUpperCase();
 								int index = -1;
@@ -66,7 +65,7 @@ public class Ahorcado{
 									Print.errorCen("Este Jugador no esta registrado" );
 								}
 								break;
-								
+
 				}
 				case 3: {
 					byte opc2 = 0;
@@ -101,12 +100,12 @@ public class Ahorcado{
 										char conf;
 										jugador.info();
 										Print.endl(1);
-										Print.outSln("Esta segur@ que desea resetear a: " + jugador.getAlias() 
+										Print.outSln("Esta segur@ que desea resetear a: " + jugador.getAlias()
 												+ " (y/n)");
 										conf = C.in_char("Seleccion: ");
 										if((conf == 'y')|| (conf == 'Y')){
 												jugador.resetear();
-												Print.pausa("El jugador \"" + jugador.getAlias() + "\" ha sido reseteado"); 
+												Print.pausa("El jugador \"" + jugador.getAlias() + "\" ha sido reseteado");
 												opc2 = 0;
 												break;
 										}else{
@@ -117,7 +116,7 @@ public class Ahorcado{
 								if(jugadorEncontrado == false){
 									Print.errorCen("Jugador \"" + alias + "\" no encontrado");
 								}
-								
+
 								break;
 							}
 							default:{
@@ -130,7 +129,7 @@ public class Ahorcado{
 					break;
 				}
 				case 2:{
-					
+
 						for(int j = 0; j < jugadores.size()-1;j++){
 							for(int i = 0; i < jugadores.size()-1; i++){
 								if(jugadores.get(i).getPuntaje() < jugadores.get(i+1).getPuntaje()){
@@ -141,14 +140,14 @@ public class Ahorcado{
 						}
 					}
 					for(Jugador player : jugadores){
-						
+
 						player.info();
 						Print.endl(1);
 					}
 					Print.pausa("PRESIONE ENTER PARA CONTINUAR");
 					break;
 				}
-				
+
 				case 9:{
 					acerca_de();
 					Print.pausa("PRESIONE ENTER PARA CONTINUAR");
@@ -159,7 +158,7 @@ public class Ahorcado{
 					break;
 				}//default
 			}//switch
-			
+
 			//C.espacio(10);
 			//opc = C.in_byte("Si desea Salir del programa Presione 1: ");
 
@@ -178,7 +177,7 @@ public static byte menu(){
 				Print.separador();
 				Print.espacio(40);
 				Print.outln("Numero de Jugadores registrados: " + jugadores.size());
-				
+
 				Print.endl(1);
 				Print.outSln("0.- Salir del Programa");
 				if(jugadores.size() == 0){
@@ -197,7 +196,7 @@ public static byte menu(){
 				}
 				opc = C.in_byte("Seleccione una opcion: [  ]\b\b\b");
 		return opc;
-							
+
 
 	}//menu
 
@@ -236,7 +235,7 @@ public static byte menu(){
 						index++;
 						break;
 					}
-					
+
 				}
 			}
 			}
@@ -245,7 +244,7 @@ public static byte menu(){
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Verifica que el alias ya se encuentre registrado
 	 * @param alias
@@ -262,18 +261,18 @@ public static byte menu(){
 
 	public static void cargarPalabras(int nivel) throws IOException{
 		boolean fileFound = false;
-		String ruta = "";
+		String ruta = "Niveles\\";
 		String nombre = "nivel" + nivel + ".txt";
 		while(!fileFound){
 			try{
 				if(ruta == ""){
 					archivoNivel = new BufferedReader(
-							new FileReader(new File (nombre))); 
+							new FileReader(new File (nombre)));
 					fileFound = true;
 				}
 				else{
 					archivoNivel = new BufferedReader(
-							new FileReader(new File (ruta + nombre))); 
+							new FileReader(new File (ruta + nombre)));
 					fileFound = true;
 				}
 			}catch(FileNotFoundException e){
@@ -283,9 +282,9 @@ public static byte menu(){
 				fileFound = false;
 			}
 		}
-		
+
 		palabras.clear();
-		
+
 		String line = null;
 		try {
 			while(((line=archivoNivel.readLine())!=null)){
@@ -300,7 +299,7 @@ public static byte menu(){
 	}
 
 
-	
+
 	public static final void acerca_de(){
 	for(int i = 0;i<15;i++){
 		System.out.println("\n\n");
@@ -319,16 +318,16 @@ public static byte menu(){
 	System.out.println("Repositorio del programa disponible en:\nURL: "
 			+ "          https://github.com/Nestyko/Hangman");
 	System.out.print("\n");
-	
+
 	}//acerca_de
-	
+
 	public static void jugar(Jugador player){
 		boolean terminado = false;
 		Integer partidas = 0;
 		ArrayList<Integer> palabrasFalladas = new ArrayList<Integer>();
 		Integer aleatorio = 0;
 		do{
-			
+
 		try{
 			cargarPalabras(player.getNivel());
 			}catch(IOException e){
@@ -346,9 +345,9 @@ public static byte menu(){
 			String letra = "";
 			String letrasFalladas = "";
 			String letrasUsadas = "";
-		
+
 		while(oportunidades > 0){
-			
+
 			Print.cls();
 			Print.outCen("| Nivel " + player.getNivel() + " |");
 		Print.endl(3);
@@ -413,9 +412,9 @@ public static byte menu(){
 			Print.pausa();
 			partidas++;
 			oportunidades = 5;
-			
+
 			if(partidas == 5){
-				
+
 				partidas = 0;
 				if(player.getNivel() == 5){
 					palabrasFalladas.clear();
@@ -449,11 +448,11 @@ public static byte menu(){
 					}
 					Print.pausa();
 				}
-				
+
 			}
 			break;
 		}
-		
+
 		}//while
 		if(oportunidades == 0){
 			player.setVida(player.getVida()-1);
@@ -467,15 +466,15 @@ public static byte menu(){
 			Print.outCenln("Solo te quedan " + player.getVida() + " vidas");
 			Print.endl(5);
 			}
-			
+
 			Print.pausa();
 		}
-		
+
 		}while((player.getVida() > 0) && (!terminado));
-		
+
 	}
-	
-	
-	
+
+
+
 
 }
